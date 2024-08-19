@@ -12,7 +12,22 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   bool oTurn = true;
-  List<String> displayXO = ["","","","","","","","","",];
+  List<String> displayXO = [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ];
+  int oScore = 0;
+  int xScore = 0;
+  int filledBoxes = 0;
+  String resultDeclaration = "";
+  bool winnerFound = false;
 
   static var customFontWhite = GoogleFonts.coiny(
       textStyle:
@@ -28,7 +43,42 @@ class _GameScreenState extends State<GameScreen> {
           children: [
             Expanded(
               flex: 1,
-              child: Text("Score Board"),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Player O",
+                          style: customFontWhite,
+                        ),
+                        Text(
+                          oScore.toString(),
+                          style: customFontWhite,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Player X",
+                          style: customFontWhite,
+                        ),
+                        Text(
+                          xScore.toString(),
+                          style: customFontWhite,
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
             Expanded(
               flex: 3,
@@ -63,7 +113,10 @@ class _GameScreenState extends State<GameScreen> {
             ),
             Expanded(
               flex: 1,
-              child: Text("Timer"),
+              child: Text(
+                resultDeclaration,
+                style: customFontWhite,
+              ),
             ),
           ],
         ),
@@ -75,13 +128,94 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       if (oTurn && displayXO[index] == "") {
         displayXO[index] = "O";
-      } else {
+        filledBoxes++;
+      } else if (!oTurn && displayXO[index] == "") {
         displayXO[index] = "X";
+        filledBoxes++;
       }
 
       oTurn = !oTurn;
+      _checkWinner();
     });
   }
 
-}
+  void _checkWinner() {
+    if (displayXO[0] == displayXO[1] &&
+        displayXO[0] == displayXO[2] &&
+        displayXO[0] != "") {
+      setState(() {
+        resultDeclaration = "Player" + displayXO[0] + "Wins!";
+        _updateScore(displayXO[0]);
+      });
+    }
+    if (displayXO[3] == displayXO[4] &&
+        displayXO[3] == displayXO[5] &&
+        displayXO[3] != "") {
+      setState(() {
+        resultDeclaration = "Player" + displayXO[3] + "Wins!";
+        _updateScore(displayXO[3]);
+      });
+    }
+    if (displayXO[6] == displayXO[7] &&
+        displayXO[6] == displayXO[8] &&
+        displayXO[6] != "") {
+      setState(() {
+        resultDeclaration = "Player" + displayXO[6] + "Wins!";
+        _updateScore(displayXO[6]);
+      });
+    }
+    if (displayXO[0] == displayXO[3] &&
+        displayXO[0] == displayXO[6] &&
+        displayXO[0] != "") {
+      setState(() {
+        resultDeclaration = "Player" + displayXO[0] + "Wins!";
+        _updateScore(displayXO[0]);
+      });
+    }
+    if (displayXO[1] == displayXO[4] &&
+        displayXO[1] == displayXO[7] &&
+        displayXO[1] != "") {
+      setState(() {
+        resultDeclaration = "Player" + displayXO[1] + "Wins!";
+        _updateScore(displayXO[1]);
+      });
+    }
+    if (displayXO[2] == displayXO[5] &&
+        displayXO[2] == displayXO[8] &&
+        displayXO[2] != "") {
+      setState(() {
+        resultDeclaration = "Player" + displayXO[2] + "Wins!";
+        _updateScore(displayXO[2]);
+      });
+    }
+    if (displayXO[0] == displayXO[4] &&
+        displayXO[0] == displayXO[8] &&
+        displayXO[0] != "") {
+      setState(() {
+        resultDeclaration = "Player" + displayXO[0] + "Wins!";
+        _updateScore(displayXO[0]);
+      });
+    }
+    if (displayXO[2] == displayXO[4] &&
+        displayXO[2] == displayXO[6] &&
+        displayXO[2] != "") {
+      setState(() {
+        resultDeclaration = "Player" + displayXO[2] + "Wins!";
+        _updateScore(displayXO[2]);
+      });
+    } else if (!winnerFound && filledBoxes == 9) {
+      setState(() {
+        resultDeclaration = "Nobody Wins";
+      });
+    }
+  }
 
+  void _updateScore(String winner) {
+    if (winner == "O") {
+      oScore++;
+    } else if (winner == "X") {
+      xScore++;
+    }
+    winnerFound = true;
+  }
+}
