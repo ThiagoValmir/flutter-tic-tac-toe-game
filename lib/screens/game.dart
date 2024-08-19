@@ -24,6 +24,8 @@ class _GameScreenState extends State<GameScreen> {
     "",
     "",
   ];
+  List<int> matchedIndexes = [];
+  int attempts = 0;
   int oScore = 0;
   int xScore = 0;
   int filledBoxes = 0;
@@ -121,7 +123,7 @@ class _GameScreenState extends State<GameScreen> {
                     borderRadius: BorderRadius.circular(15),
                     border:
                     Border.all(width: 5, color: MainColor.primaryColor),
-                    color: MainColor.secondaryColor,
+                    color: matchedIndexes.contains(index) ? MainColor.accentColor : MainColor.secondaryColor,
                   ),
                   child: Center(
                     child: Text(
@@ -184,6 +186,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[0] != "") {
       setState(() {
         resultDeclaration = "Player" + displayXO[0] + "Wins!";
+        matchedIndexes.addAll([0,1,2]);
+        stopTimer();
         _updateScore(displayXO[0]);
       });
     }
@@ -192,6 +196,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[3] != "") {
       setState(() {
         resultDeclaration = "Player" + displayXO[3] + "Wins!";
+        matchedIndexes.addAll([3,4,5]);
+        stopTimer();
         _updateScore(displayXO[3]);
       });
     }
@@ -200,6 +206,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[6] != "") {
       setState(() {
         resultDeclaration = "Player" + displayXO[6] + "Wins!";
+        matchedIndexes.addAll([6,7,8]);
+        stopTimer();
         _updateScore(displayXO[6]);
       });
     }
@@ -208,6 +216,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[0] != "") {
       setState(() {
         resultDeclaration = "Player" + displayXO[0] + "Wins!";
+        matchedIndexes.addAll([0,3,6]);
+        stopTimer();
         _updateScore(displayXO[0]);
       });
     }
@@ -216,6 +226,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[1] != "") {
       setState(() {
         resultDeclaration = "Player" + displayXO[1] + "Wins!";
+        matchedIndexes.addAll([1,4,7]);
+        stopTimer();
         _updateScore(displayXO[1]);
       });
     }
@@ -224,6 +236,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[2] != "") {
       setState(() {
         resultDeclaration = "Player" + displayXO[2] + "Wins!";
+        matchedIndexes.addAll([2,5,8]);
+        stopTimer();
         _updateScore(displayXO[2]);
       });
     }
@@ -232,6 +246,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[0] != "") {
       setState(() {
         resultDeclaration = "Player" + displayXO[0] + "Wins!";
+        matchedIndexes.addAll([0,4,8]);
+        stopTimer();
         _updateScore(displayXO[0]);
       });
     }
@@ -240,6 +256,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[2] != "") {
       setState(() {
         resultDeclaration = "Player" + displayXO[2] + "Wins!";
+        matchedIndexes.addAll([2,4,6]);
+        stopTimer();
         _updateScore(displayXO[2]);
       });
     } else if (!winnerFound && filledBoxes == 9) {
@@ -285,10 +303,13 @@ class _GameScreenState extends State<GameScreen> {
           padding: EdgeInsets.symmetric(
               horizontal: 32, vertical: 16)),
       onPressed: () {
+        matchedIndexes = [];
         startTimer();
         _clearBoard();
+        attempts++;
       },
       child: Text(
+        attempts == 0 ? "Start" :
         "Play Again!", style: TextStyle(fontSize: 20, color: Colors.black,),),
     );
   }
