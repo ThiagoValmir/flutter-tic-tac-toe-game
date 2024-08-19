@@ -67,7 +67,7 @@ class _GameScreenState extends State<GameScreen> {
         child: Column(
           children: [
           Expanded(
-          flex: 1,
+          flex: 0,
           child: Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +137,7 @@ class _GameScreenState extends State<GameScreen> {
           ),
         ),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -161,18 +161,21 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _tapped(int index) {
-    setState(() {
-      if (oTurn && displayXO[index] == "") {
-        displayXO[index] = "O";
-        filledBoxes++;
-      } else if (!oTurn && displayXO[index] == "") {
-        displayXO[index] = "X";
-        filledBoxes++;
-      }
+    final isRunning = timer == null ? false : timer!.isActive;
+    if (isRunning) {
+      setState(() {
+        if (oTurn && displayXO[index] == "") {
+          displayXO[index] = "O";
+          filledBoxes++;
+        } else if (!oTurn && displayXO[index] == "") {
+          displayXO[index] = "X";
+          filledBoxes++;
+        }
 
-      oTurn = !oTurn;
-      _checkWinner();
-    });
+        oTurn = !oTurn;
+        _checkWinner();
+      });
+    }
   }
 
   void _checkWinner() {
@@ -271,7 +274,10 @@ class _GameScreenState extends State<GameScreen> {
     return isRunning ? SizedBox(width: 100, height: 100, child: Stack(
       fit: StackFit.expand,
       children: [
-        CircularProgressIndicator(value: 1 - seconds / maxSeconds, valueColor: AlwaysStoppedAnimation(Colors.white), strokeWidth: 8, backgroundColor: MainColor.accentColor,)
+        CircularProgressIndicator(value: 1 - seconds / maxSeconds, valueColor: AlwaysStoppedAnimation(Colors.white), strokeWidth: 8, backgroundColor: MainColor.accentColor,),
+        Center(
+          child: Text("$seconds", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 50),),
+        ),
       ],
     ),) : ElevatedButton(
       style: ElevatedButton.styleFrom(
